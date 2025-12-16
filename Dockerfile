@@ -1,24 +1,30 @@
+# ==============================
 # Multi-stage Dockerfile for Kuspid Artist Management
+# ==============================
+
+# ------------------------------
 # Stage 1: Build the application
+# ------------------------------
 FROM maven:3.9.5-eclipse-temurin-17-alpine AS builder
 
 # Set working directory
 WORKDIR /app
 
-# Copy Maven wrapper and pom.xml first (for better caching)
-COPY .mvn/ .mvn/
-COPY mvnw pom.xml ./
+# Copy pom.xml first to leverage Docker cache
+COPY pom.xml .
 
-# Download dependencies (cached if pom.xml hasn't changed)
-RUN ./mvnw dependency:go-offline -B
+# Download dependencies (offline mode)
+RUN mvn dependency:go-offline -B
 
-# Copy source code
+# Copy the source code
 COPY src ./src
 
-# Build the application (skip tests for faster builds)
-RUN ./mvnw clean package -DskipTests -B
+# Build the application, skipping tests for faster builds
+RUN mvn clean package -DskipTests -B
 
-# Stage 2: Create the runtime image
+# ------------------------------
+# Stage 2: Runtime image
+# ------------------------------
 FROM eclipse-temurin:17-jre-alpine
 
 # Install necessary packages
@@ -34,8 +40,8 @@ RUN addgroup -g 1001 -S appuser && \
 # Set working directory
 WORKDIR /app
 
-# Copy the built JAR from builder stage
-COPY --from=builder /app/target/artist-management-*.jar app.jar
+# Copy the built JAR from the builder stage
+COPY --from=builder /app/target/*.jar app.jar
 
 # Create directories for storage and logs
 RUN mkdir -p /app/storage/beats /app/logs && \
