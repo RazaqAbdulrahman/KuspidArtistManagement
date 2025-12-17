@@ -9,12 +9,31 @@ services:
 
     envVars:
       # --------------------
-      # Database
+      # Database (Render Managed PostgreSQL)
       # --------------------
-      - key: DATABASE_URL
+      - key: SPRING_DATASOURCE_URL
         fromDatabase:
           name: kuspid-db
-          property: connectionString
+          property: jdbcConnectionString
+
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: kuspid-db
+          property: user
+
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: kuspid-db
+          property: password
+
+      # --------------------
+      # JPA / Hibernate
+      # --------------------
+      - key: SPRING_JPA_HIBERNATE_DDL_AUTO
+        value: validate
+
+      - key: SPRING_JPA_DATABASE_PLATFORM
+        value: org.hibernate.dialect.PostgreSQLDialect
 
       # --------------------
       # Security
@@ -32,7 +51,7 @@ services:
         value: 8080
 
       # --------------------
-      # Mail (SMTP)
+      # Mail (SMTP – set manually in dashboard)
       # --------------------
       - key: MAIL_HOST
         value: smtp.gmail.com
@@ -41,10 +60,10 @@ services:
         value: "587"
 
       - key: MAIL_USERNAME
-        sync: false   # set manually in Render dashboard
+        sync: false
 
       - key: MAIL_PASSWORD
-        sync: false   # set manually in Render dashboard
+        sync: false
 
 databases:
   - name: kuspid-db

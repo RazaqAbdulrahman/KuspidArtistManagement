@@ -3,9 +3,17 @@ spring:
     name: kuspid-artist-management
 
   datasource:
-    url: ${DATABASE_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    # Prefer Render / Spring-standard variables, fallback for local/dev
+    url: ${SPRING_DATASOURCE_URL:${DATABASE_URL}}
+    username: ${SPRING_DATASOURCE_USERNAME:${DB_USERNAME}}
+    password: ${SPRING_DATASOURCE_PASSWORD:${DB_PASSWORD}}
+
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 2
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
 
   jpa:
     show-sql: false
@@ -19,6 +27,8 @@ spring:
   flyway:
     enabled: true
     baseline-on-migrate: true
+    validate-on-migrate: true
+    locations: classpath:db/migration
 
   mail:
     host: ${MAIL_HOST}
@@ -29,7 +39,8 @@ spring:
       mail:
         smtp:
           auth: true
-          starttls.enable: true
+          starttls:
+            enable: true
           connectiontimeout: 5000
           timeout: 5000
           writetimeout: 5000
@@ -57,7 +68,9 @@ springdoc:
   swagger-ui:
     enabled: false
 
+# --------------------
 # Resilience4j – Email provider circuit breaker
+# --------------------
 resilience4j:
   circuitbreaker:
     instances:
@@ -66,14 +79,16 @@ resilience4j:
         wait-duration-in-open-state: 30s
         sliding-window-size: 10
 
-# Application specific
+# --------------------
+# Application-specific config
+# --------------------
 app:
   jwt:
     secret: ${JWT_SECRET}
-    expiration: 86400000
+    expiration: 86400000  # 24 hours
 
   storage:
-    provider: s3
+    provider: s3   # future-proof, even if using a cheap alternative now
 
   email:
     provider: smtp
