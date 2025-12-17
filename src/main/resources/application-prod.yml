@@ -5,7 +5,7 @@ spring:
   datasource:
     # Render-friendly environment variables
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://dpg-d50r8cjuibrs73e2vrbg-a.oregon-postgres.render.com:5432/kuspid_artist_management}
-    username: ${SPRING_DATASOURCE_USERNAME:kuspid_admin}
+    username: ${SPRING_DATASOURCE_USERNAME:kuspid_user}
     password: ${SPRING_DATASOURCE_PASSWORD:EkHKlCek4UcSxZfQ2QYtJpcUTO7yxuH6}
 
     hikari:
