@@ -4,7 +4,7 @@ spring:
 
   datasource:
     # Prefer Render / Spring-standard variables, fallback for local/dev
-    url: ${SPRING_DATASOURCE_URL:${DATABASE_URL}}
+    url: ${SPRING_DATASOURCE_URL}
     username: ${SPRING_DATASOURCE_USERNAME:${DB_USERNAME}}
     password: ${SPRING_DATASOURCE_PASSWORD:${DB_PASSWORD}}
 
@@ -88,7 +88,7 @@ app:
     expiration: 86400000  # 24 hours
 
   storage:
-    provider: s3   # future-proof, even if using a cheap alternative now
+    provider: ${STORAGE_PROVIDER:local}   # future-proof, even if using a cheap alternative now
 
   email:
     provider: smtp
