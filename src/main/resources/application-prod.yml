@@ -3,10 +3,10 @@ spring:
     name: kuspid-artist-management
 
   datasource:
-    # Prefer Render / Spring-standard variables, fallback for local/dev
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${SPRING_DATASOURCE_USERNAME:${DB_USERNAME}}
-    password: ${SPRING_DATASOURCE_PASSWORD:${DB_PASSWORD}}
+    # Render-friendly environment variables
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://dpg-d50r8cjuibrs73e2vrbg-a.oregon-postgres.render.com:5432/kuspid_artist_management}
+    username: ${SPRING_DATASOURCE_USERNAME:kuspid_admin}
+    password: ${SPRING_DATASOURCE_PASSWORD:EkHKlCek4UcSxZfQ2QYtJpcUTO7yxuH6}
 
     hikari:
       maximum-pool-size: 5
@@ -68,9 +68,6 @@ springdoc:
   swagger-ui:
     enabled: false
 
-# --------------------
-# Resilience4j – Email provider circuit breaker
-# --------------------
 resilience4j:
   circuitbreaker:
     instances:
@@ -79,16 +76,13 @@ resilience4j:
         wait-duration-in-open-state: 30s
         sliding-window-size: 10
 
-# --------------------
-# Application-specific config
-# --------------------
 app:
   jwt:
     secret: ${JWT_SECRET}
     expiration: 86400000  # 24 hours
 
   storage:
-    provider: ${STORAGE_PROVIDER:local}   # future-proof, even if using a cheap alternative now
+    provider: ${STORAGE_PROVIDER:local}
 
   email:
     provider: smtp
