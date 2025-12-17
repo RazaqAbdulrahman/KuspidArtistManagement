@@ -16,15 +16,6 @@ services:
           name: kuspid-db
           property: connectionString
 
-      - key: SPRING_DATASOURCE_USERNAME
-        fromDatabase:
-          name: kuspid-db
-          property: user
-
-      - key: SPRING_DATASOURCE_PASSWORD
-        fromDatabase:
-          name: kuspid-db
-          property: password
 
       # --------------------
       # JPA / Hibernate
@@ -32,8 +23,6 @@ services:
       - key: SPRING_JPA_HIBERNATE_DDL_AUTO
         value: update
 
-      - key: SPRING_JPA_DATABASE_PLATFORM
-        value: org.hibernate.dialect.PostgreSQLDialect
 
       # --------------------
       # Security
