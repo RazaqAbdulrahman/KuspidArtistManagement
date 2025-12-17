@@ -3,10 +3,9 @@ spring:
     name: kuspid-artist-management
 
   datasource:
-    # Render-friendly environment variables
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://dpg-d50r8cjuibrs73e2vrbg-a.oregon-postgres.render.com:5432/kuspid_artist_management}
-    username: ${SPRING_DATASOURCE_USERNAME:kuspid_user}
-    password: ${SPRING_DATASOURCE_PASSWORD:EkHKlCek4UcSxZfQ2QYtJpcUTO7yxuH6}
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
 
     hikari:
       maximum-pool-size: 5
@@ -79,7 +78,7 @@ resilience4j:
 app:
   jwt:
     secret: ${JWT_SECRET}
-    expiration: 86400000  # 24 hours
+    expiration: 86400000 # 24 hours
 
   storage:
     provider: ${STORAGE_PROVIDER:local}
