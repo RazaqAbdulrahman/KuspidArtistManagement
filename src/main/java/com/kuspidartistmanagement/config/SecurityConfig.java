@@ -25,6 +25,21 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Security configuration for JWT-based stateless authentication.
+ *
+ * This class configures:
+ * - JWT authentication filter
+ * - Stateless session management
+ * - Password encoding
+ * - CORS
+ * - Public/protected endpoints
+ *
+ * Notes:
+ * - Stateless: no session storage on server
+ * - JWT-based: token carries authentication info
+ * - Public endpoints: authentication not required
+ */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -34,16 +49,24 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final CustomUserDetailsService userDetailsService;
 
+    /**
+     * Main security filter chain configuration.
+     * Configures endpoints, session management, authentication provider, and JWT filter.
+     *
+     * @param http HTTP security builder
+     * @return configured SecurityFilterChain
+     * @throws Exception if configuration fails
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // Disable CSRF for stateless JWT
+                // Disable CSRF since JWT is used
                 .csrf(AbstractHttpConfigurer::disable)
 
                 // Configure CORS
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
-                // Stateless session
+                // Stateless session management
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
@@ -52,27 +75,32 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Public endpoints
                         .requestMatchers(
-                                "/api/auth/**",
-                                "/api/webhook/**",
-                                "/api-docs/**",
+                                "/api/auth/**",        // Authentication endpoints
+                                "/api/webhook/**",     // Webhook endpoints
+                                "/api-docs/**",        // Swagger/OpenAPI
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
-                                "/actuator/health"  // <-- Public for Render health check
+                                "/health"              // <-- Dedicated public health endpoint
                         ).permitAll()
 
-                        // All others require authentication
+                        // All other endpoints require authentication
                         .anyRequest().authenticated()
                 )
 
-                // Authentication provider
+                // Set authentication provider
                 .authenticationProvider(authenticationProvider())
 
-                // JWT filter before username/password filter
+                // Add JWT filter before username/password filter
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
+    /**
+     * Configures authentication provider using custom user details service and password encoder.
+     *
+     * @return AuthenticationProvider
+     */
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -81,19 +109,38 @@ public class SecurityConfig {
         return authProvider;
     }
 
+    /**
+     * Exposes AuthenticationManager bean.
+     *
+     * @param config AuthenticationConfiguration
+     * @return AuthenticationManager
+     * @throws Exception if configuration fails
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
+    /**
+     * Password encoder using BCrypt with strength 12.
+     *
+     * @return PasswordEncoder
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);
     }
 
+    /**
+     * CORS configuration for dev and production environments.
+     *
+     * @return CorsConfigurationSource
+     */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
+
+        // Allowed origins
         configuration.setAllowedOrigins(Arrays.asList(
                 "http://localhost:3000",
                 "http://localhost:4200",
@@ -101,13 +148,23 @@ public class SecurityConfig {
                 "https://kuspid-artist-management.onrender.com",
                 "https://kuspid-artist-management-api.onrender.com"
         ));
+
+        // Allowed methods
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+
+        // Allowed headers
         configuration.setAllowedHeaders(List.of("*"));
+
+        // Allow credentials (cookies, authorization headers)
         configuration.setAllowCredentials(true);
+
+        // Preflight cache duration (seconds)
         configuration.setMaxAge(3600L);
 
+        // Register configuration for all paths
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
+
         return source;
     }
 }
