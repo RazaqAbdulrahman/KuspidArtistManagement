@@ -78,7 +78,7 @@ public class CustomUserDetailsService implements UserDetailsService {
      * @throws UsernameNotFoundException if user not found
      */
     @Transactional(readOnly = true)
-    public Admin loadAdminByEmail(String email) throws UsernameNotFoundException {
+    public Admin loadAdminByEmail(String email) {
         return adminRepository.findByEmailAndActiveTrue(email)
                 .orElseThrow(() -> new UsernameNotFoundException(
                         "User not found with email: " + email));
