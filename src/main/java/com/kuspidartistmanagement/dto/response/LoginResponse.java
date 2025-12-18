@@ -12,9 +12,11 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class LoginResponse {
-    private String token;
-    private String type;        // Optional default can be set in builder
+
+    private String accessToken; // match frontend naming
+    private String tokenType;   // usually "Bearer", optional
     private UUID userId;
     private String email;
     private UUID tenantId;
+
 }
