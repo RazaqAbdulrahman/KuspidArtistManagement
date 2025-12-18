@@ -1,11 +1,11 @@
--- ================================
--- V5: Seed Default Tenant and Admin
--- ================================
+-- =========================================
+-- V6: Ensure admin exists and reset password
+-- =========================================
 
--- 0. Ensure UUID generation is available (Postgres)
+-- 0. Ensure UUID generation is available
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
--- 1. Create default tenant (idempotent, deterministic)
+-- 1. Ensure default tenant exists
 INSERT INTO tenants (
     id,
     name,
@@ -25,7 +25,7 @@ WHERE NOT EXISTS (
     SELECT 1 FROM tenants WHERE email = 'kuspidmusic@gmail.com'
 );
 
--- 2. Create admin user for the tenant (idempotent, safe FK)
+-- 2. Ensure admin exists (linked to correct tenant)
 INSERT INTO admins (
     id,
     email,
@@ -40,7 +40,7 @@ INSERT INTO admins (
 SELECT
     gen_random_uuid(),
     'kuspidmusic@gmail.com',
-    '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5Rvqz.UEfXQKi',
+    '$2a$12$u5V1Wq3mZ1q3Tz4mZqJ1OuQZ4rYk5hB2wQ0yVh2cX8bZxGqzQ9B8e',
     'Kuspid',
     'Admin',
     t.id,
@@ -52,3 +52,11 @@ WHERE t.email = 'kuspidmusic@gmail.com'
   AND NOT EXISTS (
       SELECT 1 FROM admins WHERE email = 'kuspidmusic@gmail.com'
   );
+
+-- 3. ALWAYS reset admin password + activate account
+UPDATE admins
+SET
+    password = '$2a$12$u5V1Wq3mZ1q3Tz4mZqJ1OuQZ4rYk5hB2wQ0yVh2cX8bZxGqzQ9B8e',
+    active = TRUE,
+    updated_at = NOW()
+WHERE email = 'kuspidmusic@gmail.com';
