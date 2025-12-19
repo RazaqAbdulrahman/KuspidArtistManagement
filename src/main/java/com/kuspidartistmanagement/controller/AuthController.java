@@ -1,4 +1,5 @@
 // AuthController.java
+/*
 package com.kuspidartistmanagement.controller;
 
 import com.kuspidartistmanagement.dto.request.LoginRequest;
@@ -28,3 +29,6 @@ public class AuthController {
         return ResponseEntity.ok(ApiResponse.success("Login successful", response));
     }
 }
+
+
+ */
