@@ -1,3 +1,4 @@
+/*
 package com.kuspidartistmanagement.implservice;
 
 import com.kuspidartistmanagement.domain.entity.Admin;
@@ -64,3 +65,6 @@ public class AuthServiceImpl implements AuthService {
                 .build();
     }
 }
+
+
+ */

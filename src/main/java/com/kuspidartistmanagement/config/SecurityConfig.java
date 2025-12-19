@@ -1,3 +1,4 @@
+/*
 package com.kuspidartistmanagement.config;
 
 import com.kuspidartistmanagement.security.CustomUserDetailsService;
@@ -39,7 +40,7 @@ import java.util.List;
  * - Stateless: no session storage on server
  * - JWT-based: token carries authentication info
  * - Public endpoints: authentication not required
- */
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -56,7 +57,7 @@ public class SecurityConfig {
      * @param http HTTP security builder
      * @return configured SecurityFilterChain
      * @throws Exception if configuration fails
-     */
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -100,7 +101,7 @@ public class SecurityConfig {
      * Configures authentication provider using custom user details service and password encoder.
      *
      * @return AuthenticationProvider
-     */
+
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -115,7 +116,7 @@ public class SecurityConfig {
      * @param config AuthenticationConfiguration
      * @return AuthenticationManager
      * @throws Exception if configuration fails
-     */
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
@@ -125,7 +126,7 @@ public class SecurityConfig {
      * Password encoder using BCrypt with strength 12.
      *
      * @return PasswordEncoder
-     */
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);
@@ -135,7 +136,7 @@ public class SecurityConfig {
      * CORS configuration for dev and production environments.
      *
      * @return CorsConfigurationSource
-     */
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -168,3 +169,7 @@ public class SecurityConfig {
         return source;
     }
 }
+
+
+ */
+

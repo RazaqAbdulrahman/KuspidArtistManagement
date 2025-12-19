@@ -1,3 +1,4 @@
+/*
 package com.kuspidartistmanagement.security;
 
 import com.kuspidartistmanagement.domain.entity.Admin;
@@ -20,7 +21,7 @@ import java.util.Collections;
  * Loads user from database and converts to Spring Security UserDetails.
  *
  * Thread-safe and stateless - uses constructor injection for testability.
- */
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -35,7 +36,7 @@ public class CustomUserDetailsService implements UserDetailsService {
      * @param username the email/username
      * @return UserDetails for Spring Security
      * @throws UsernameNotFoundException if user not found
-     */
+
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -55,7 +56,7 @@ public class CustomUserDetailsService implements UserDetailsService {
      *
      * @param admin the admin entity
      * @return UserDetails for Spring Security
-     */
+
     private UserDetails buildUserDetails(Admin admin) {
         return User.builder()
                 .username(admin.getEmail())
@@ -76,7 +77,7 @@ public class CustomUserDetailsService implements UserDetailsService {
      * @param email the admin email
      * @return Admin entity
      * @throws UsernameNotFoundException if user not found
-     */
+
     @Transactional(readOnly = true)
     public Admin loadAdminByEmail(String email) {
         return adminRepository.findByEmailAndActiveTrue(email)
@@ -84,3 +85,8 @@ public class CustomUserDetailsService implements UserDetailsService {
                         "User not found with email: " + email));
     }
 }
+
+
+ */
+
+

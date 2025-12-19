@@ -1,3 +1,4 @@
+/*
 package com.kuspidartistmanagement.security;
 
 import jakarta.servlet.FilterChain;
@@ -33,7 +34,7 @@ import java.util.UUID;
  * 7. Clear tenant context after request completes
  *
  * Thread-safe - uses constructor injection, no mutable state.
- */
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -74,7 +75,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      *
      * @param request HTTP request
      * @return JWT token or null if not found
-     */
+
     private String extractJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
 
@@ -91,7 +92,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      *
      * @param jwt     JWT token
      * @param request HTTP request
-     */
+
     private void authenticateUser(String jwt, HttpServletRequest request) {
         // Extract username from token
         String username = jwtTokenProvider.getUsernameFromToken(jwt);
@@ -121,3 +122,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
     }
 }
+
+
+ */

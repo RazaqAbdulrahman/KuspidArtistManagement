@@ -1,3 +1,4 @@
+/*
 package com.kuspidartistmanagement.security;
 
 import io.jsonwebtoken.*;
@@ -19,7 +20,7 @@ import java.util.UUID;
  * JWT token provider for authentication and tenant context.
  * Generates and validates JWT tokens containing user and tenant information.
  * Thread-safe and stateless - no business logic, only token operations.
- */
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -42,7 +43,7 @@ public class JwtTokenProvider {
      * Initialize the secret key:
      * - In dev: generate a secure random key
      * - In prod: use the configured secret
-     */
+
     @PostConstruct
     public void init() {
         if (isDevProfile()) {
@@ -69,7 +70,7 @@ public class JwtTokenProvider {
 
     /**
      * Generates JWT token for authenticated user.
-     */
+
     public String generateToken(Authentication authentication, UUID userId, UUID tenantId) {
         String username = authentication.getName();
         Date now = new Date();
@@ -87,7 +88,7 @@ public class JwtTokenProvider {
 
     /**
      * Generates JWT token with explicit parameters.
-     */
+
     public String generateToken(String username, UUID userId, UUID tenantId) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpiration);
@@ -104,14 +105,14 @@ public class JwtTokenProvider {
 
     /**
      * Extracts username from JWT token.
-     */
+
     public String getUsernameFromToken(String token) {
         return getClaims(token).getSubject();
     }
 
     /**
      * Extracts tenant ID from JWT token.
-     */
+
     public UUID getTenantIdFromToken(String token) {
         String tenantIdStr = getClaims(token).get(TENANT_ID_CLAIM, String.class);
         return tenantIdStr != null ? UUID.fromString(tenantIdStr) : null;
@@ -119,7 +120,7 @@ public class JwtTokenProvider {
 
     /**
      * Extracts user ID from JWT token.
-     */
+
     public UUID getUserIdFromToken(String token) {
         String userIdStr = getClaims(token).get(USER_ID_CLAIM, String.class);
         return userIdStr != null ? UUID.fromString(userIdStr) : null;
@@ -127,7 +128,7 @@ public class JwtTokenProvider {
 
     /**
      * Validates JWT token.
-     */
+
     public boolean validateToken(String token) {
         try {
             getClaims(token);
@@ -140,7 +141,7 @@ public class JwtTokenProvider {
 
     /**
      * Parses JWT token and returns claims.
-     */
+
     private Claims getClaims(String token) {
         return Jwts.parser()
                 .setSigningKey(secretKey)
@@ -149,3 +150,7 @@ public class JwtTokenProvider {
                 .getBody();
     }
 }
+
+
+ */
+
