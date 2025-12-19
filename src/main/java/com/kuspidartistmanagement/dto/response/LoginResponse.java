@@ -14,7 +14,7 @@ import java.util.UUID;
 public class LoginResponse {
 
     private String accessToken; // Frontend expects this
-    private String tokenType;   // "Bearer"
+    private String type;   // "Bearer"
     private UUID userId;
     private String email;
     private UUID tenantId;

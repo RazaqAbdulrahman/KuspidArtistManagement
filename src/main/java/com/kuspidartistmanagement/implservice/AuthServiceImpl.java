@@ -57,7 +57,7 @@ public class AuthServiceImpl implements AuthService {
 
         return LoginResponse.builder()
                 .accessToken(token)
-                .tokenType("Bearer")
+                .type("Bearer")
                 .userId(admin.getId())
                 .email(admin.getEmail())
                 .tenantId(admin.getTenantId())
