@@ -37,26 +37,3 @@ build/
 
 ### Mac OS ###
 .DS_Store
-
-
-
-# Logs
-logs/
-*.log
-
-# Environment variables
-.env
-*.env
-
-# Uploaded files
-storage/
-uploads/
-beats/
-
-# IDEs
-.idea/
-
-
-# OS
-
-Thumbs.db
